@@ -3,14 +3,14 @@ import { Moon, Sun } from 'lucide-react';
 import { Theme } from '../types';
 
 export const ThemeToggle: React.FC = () => {
-  const [theme, setTheme] = useState<Theme>('dark');
-
-  useEffect(() => {
-    // Check initial preference
-    if (window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches) {
-      setTheme('light');
+  const [theme, setTheme] = useState<Theme>(() => {
+    if (typeof window !== 'undefined') {
+      const savedTheme = localStorage.getItem('theme');
+      if (savedTheme === 'dark' || savedTheme === 'light') return savedTheme;
+      if (window.matchMedia('(prefers-color-scheme: light)').matches) return 'light';
     }
-  }, []);
+    return 'dark'; // Default
+  });
 
   useEffect(() => {
     const html = document.documentElement;
@@ -19,6 +19,7 @@ export const ThemeToggle: React.FC = () => {
     } else {
       html.classList.remove('dark');
     }
+    localStorage.setItem('theme', theme);
   }, [theme]);
 
   const toggleTheme = () => {

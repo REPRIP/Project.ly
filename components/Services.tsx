@@ -1,76 +1,140 @@
-import React from 'react';
-import { ArrowUpRight } from 'lucide-react';
-import { motion } from 'framer-motion';
+import React, { useRef } from 'react';
+import { ArrowUpRight, BarChart3, Database, Globe2, Layers } from 'lucide-react';
+import { motion, useScroll, useTransform, MotionValue } from 'framer-motion';
 
 const services = [
   {
     category: "Web Applications",
     title: "Modular SaaS Platforms",
-    description: "High-performance single-page applications built with React and Next.js. Optimized for SEO, accessibility, and complex state management."
+    description: "High-performance single-page applications built with React and Next.js. We architect for modularity, allowing your product to scale from MVP to Enterprise without a rewrite.",
+    icon: <Globe2 className="w-full h-full text-neon-blue" />,
+    color: "bg-cyan-50 dark:bg-cyan-950/20",
+    border: "border-cyan-200 dark:border-cyan-800",
+    tags: ["Next.js", "React", "Node.js", "PostgreSQL"]
   },
   {
     category: "Internal Tools",
     title: "Data Dashboards & Admin Panels",
-    description: "Secure, role-based internal systems to visualize data and manage operations. Integrated directly with your existing database architecture."
+    description: "Secure, role-based internal systems. We build the control centers for your business operations, integrating directly with your existing database architecture for real-time insights.",
+    icon: <BarChart3 className="w-full h-full text-neon-green" />,
+    color: "bg-lime-50 dark:bg-lime-950/20",
+    border: "border-lime-200 dark:border-lime-800",
+    tags: ["Recharts", "TanStack Table", "Supabase", "Redis"]
   },
   {
     category: "AI Integration",
     title: "AI-Powered Interfaces",
-    description: "Seamless integration of LLMs (Gemini, GPT) and vector databases into consumer-facing products for intelligent search and automation."
+    description: "Seamless integration of LLMs and vector databases. We build 'chat with data' features, semantic search, and automated workflows that feel magical to your users.",
+    icon: <Database className="w-full h-full text-zinc-900 dark:text-white" />,
+    color: "bg-zinc-50 dark:bg-zinc-900/40",
+    border: "border-zinc-200 dark:border-zinc-700",
+    tags: ["OpenAI", "LangChain", "Pinecone", "Edge Functions"]
   },
   {
     category: "Prototyping",
     title: "MVPs & Proof-of-Concepts",
-    description: "Rapidly developed, scalable initial versions of your product designed to validate market hypotheses without accumulating technical debt."
+    description: "Validate fast. We deliver rapidly developed, scalable initial versions of your product designed to test market hypotheses without accumulating technical debt.",
+    icon: <Layers className="w-full h-full text-neon-blue" />,
+    color: "bg-zinc-50 dark:bg-zinc-900/40",
+    border: "border-neon-blue/30 dark:border-neon-blue/30",
+    tags: ["Figma", "Tailwind", "Vercel", "tRPC"]
   }
 ];
 
-export const Services: React.FC = () => {
-  return (
-    <section id="services" className="py-24 bg-zinc-50 dark:bg-zinc-900 relative z-10 border-y border-zinc-200 dark:border-zinc-800">
-      <div className="max-w-7xl mx-auto px-6">
-        <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-6">
-          <div>
-            <span className="text-brand-600 dark:text-brand-400 font-mono text-sm font-medium tracking-wider uppercase mb-2 block">
-              Capabilities
-            </span>
-            <h2 className="text-3xl md:text-4xl font-bold text-zinc-900 dark:text-white">
-              What We Build
-            </h2>
-          </div>
-          <button className="text-zinc-900 dark:text-white font-medium flex items-center gap-2 hover:gap-3 transition-all">
-            View Case Studies <ArrowUpRight size={18} />
-          </button>
-        </div>
+interface CardProps {
+  i: number;
+  service: typeof services[0];
+  progress: MotionValue<number>;
+  range: [number, number];
+  targetScale: number;
+}
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {services.map((service, index) => (
-            <motion.div
-              key={index}
-              initial={{ opacity: 0, x: index % 2 === 0 ? -20 : 20 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5 }}
-              className="group relative p-8 md:p-12 bg-white dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 hover:border-brand-500/30 transition-all overflow-hidden"
-            >
-              <div className="absolute top-0 right-0 p-6 opacity-0 group-hover:opacity-100 transition-opacity">
-                <ArrowUpRight className="text-zinc-400 dark:text-zinc-600" />
-              </div>
-              <span className="text-xs font-mono text-zinc-400 dark:text-zinc-500 mb-4 block">
-                0{index + 1} / {service.category}
+const Card: React.FC<CardProps> = ({ i, service, progress, range, targetScale }) => {
+  const container = useRef(null);
+  const { scrollYProgress } = useScroll({
+    target: container,
+    offset: ['start end', 'start start']
+  });
+
+  const imageScale = useTransform(scrollYProgress, [0, 1], [2, 1]);
+  const scale = useTransform(progress, range, [1, targetScale]);
+
+  return (
+    <div ref={container} className="h-screen flex items-center justify-center sticky top-0">
+      <motion.div
+        style={{ scale, top: `calc(-5vh + ${i * 25}px)` }}
+        className={`flex flex-col relative -top-[25%] h-auto min-h-[500px] md:h-[500px] w-[90%] md:w-[1000px] rounded-3xl p-6 md:p-12 border ${service.border} ${service.color} backdrop-blur-sm shadow-2xl origin-top transition-colors`}
+      >
+        <div className="flex flex-col h-full justify-between">
+          {/* Header */}
+          <div className="flex justify-between items-start">
+            <div>
+              <span className="inline-block px-3 py-1 rounded-full bg-white/50 dark:bg-black/20 border border-black/5 dark:border-white/10 text-xs font-mono mb-4 backdrop-blur-md">
+                0{i + 1} / {service.category}
               </span>
-              <h3 className="text-2xl font-bold text-zinc-900 dark:text-white mb-4">
+              <h2 className="text-3xl md:text-5xl font-bold text-zinc-900 dark:text-white mb-6">
                 {service.title}
-              </h3>
-              <p className="text-zinc-600 dark:text-zinc-400 leading-relaxed">
-                {service.description}
-              </p>
-              
-              {/* Subtle hover effect background */}
-              <div className="absolute inset-0 bg-gradient-to-tr from-zinc-100 to-transparent dark:from-zinc-900 dark:to-transparent opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none" />
-            </motion.div>
-          ))}
+              </h2>
+            </div>
+            <div className="p-4 rounded-2xl bg-white/50 dark:bg-white/5 border border-white/20 dark:border-white/10 w-16 h-16 md:w-20 md:h-20 flex items-center justify-center">
+              {service.icon}
+            </div>
+          </div>
+
+          {/* Body */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-end">
+            <p className="text-lg text-zinc-700 dark:text-zinc-300 leading-relaxed">
+              {service.description}
+            </p>
+            <div className="flex flex-col gap-4">
+              <span className="text-xs font-mono uppercase text-zinc-500 tracking-wider">Tech Stack</span>
+              <div className="flex flex-wrap gap-2">
+                {service.tags.map((tag, idx) => (
+                  <span key={idx} className="px-3 py-1 bg-white dark:bg-black/40 rounded-md text-sm font-medium text-zinc-600 dark:text-zinc-400 border border-black/5 dark:border-white/5">
+                    {tag}
+                  </span>
+                ))}
+              </div>
+            </div>
+          </div>
         </div>
+      </motion.div>
+    </div>
+  )
+}
+
+export const Services: React.FC = () => {
+  const container = useRef(null);
+  const { scrollYProgress } = useScroll({
+    target: container,
+    offset: ['start start', 'end end']
+  })
+
+  return (
+    <section id="services" ref={container} className="bg-zinc-50 dark:bg-zinc-950 relative z-10">
+      <div className="max-w-7xl mx-auto px-6 pt-20 md:pt-32 pb-16">
+        <h2 className="text-4xl md:text-6xl font-bold text-zinc-900 dark:text-white mb-8 text-center">
+          Capabilities
+        </h2>
+        <p className="text-xl text-zinc-500 text-center max-w-2xl mx-auto mb-24">
+          We don't just build websites; we engineer digital ecosystems. Explore our core services below.
+        </p>
+      </div>
+
+      <div className="pb-[20vh]">
+        {services.map((service, i) => {
+          const targetScale = 1 - ((services.length - i) * 0.05);
+          return (
+            <Card
+              key={i}
+              i={i}
+              service={service}
+              progress={scrollYProgress}
+              range={[i * .25, 1]}
+              targetScale={targetScale}
+            />
+          )
+        })}
       </div>
     </section>
   );
