@@ -22,17 +22,13 @@ export const Navbar: React.FC = () => {
 
   return (
     <nav
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        isScrolled
-          ? 'bg-zinc-50/80 dark:bg-zinc-950/80 backdrop-blur-md border-b border-zinc-200 dark:border-zinc-800 py-3'
-          : 'bg-transparent py-5'
-      }`}
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${isScrolled
+        ? 'bg-zinc-50/80 dark:bg-zinc-950/80 backdrop-blur-md border-b border-zinc-200 dark:border-zinc-800 py-3'
+        : 'bg-transparent py-5'
+        }`}
     >
       <div className="max-w-7xl mx-auto px-6 flex items-center justify-between">
         <div className="flex items-center gap-2">
-          <div className="w-8 h-8 bg-zinc-900 dark:bg-white rounded-md flex items-center justify-center">
-            <span className="text-zinc-50 dark:text-zinc-950 font-bold font-mono text-lg">P</span>
-          </div>
           <span className="text-xl font-bold tracking-tight text-zinc-900 dark:text-white">
             Project.ly
           </span>
@@ -53,6 +49,14 @@ export const Navbar: React.FC = () => {
           </div>
           <div className="h-4 w-px bg-zinc-300 dark:bg-zinc-700"></div>
           <ThemeToggle />
+          <a
+            href="https://project-thinkk.vercel.app/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="px-4 py-2 rounded-full text-sm font-bold bg-gradient-to-r from-neon-blue to-neon-green text-zinc-900 hover:opacity-90 transition-opacity shadow-lg shadow-neon-blue/20"
+          >
+            Chat with ThinkBuddy
+          </a>
           <button className="bg-zinc-900 dark:bg-white text-white dark:text-zinc-900 px-4 py-2 rounded-full text-sm font-semibold hover:opacity-90 transition-opacity flex items-center gap-2">
             Start a Project <ArrowRight size={14} />
           </button>
@@ -84,7 +88,16 @@ export const Navbar: React.FC = () => {
                 {link.name}
               </a>
             ))}
-            <button className="w-full bg-zinc-900 dark:bg-white text-white dark:text-zinc-900 px-4 py-3 rounded-lg text-center font-semibold mt-4">
+            <a
+              href="https://project-thinkk.vercel.app/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="w-full bg-gradient-to-r from-neon-blue to-neon-green text-zinc-900 px-4 py-3 rounded-lg text-center font-bold mt-4"
+              onClick={() => setIsMobileMenuOpen(false)}
+            >
+              Chat with ThinkBuddy
+            </a>
+            <button className="w-full bg-zinc-900 dark:bg-white text-white dark:text-zinc-900 px-4 py-3 rounded-lg text-center font-semibold text-sm">
               Start a Project
             </button>
           </div>
