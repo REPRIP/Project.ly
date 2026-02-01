@@ -47,7 +47,7 @@ const plans = [
     }
 ];
 
-export const Pricing: React.FC = () => {
+export const Pricing: React.FC<{ onOpenContact: () => void }> = ({ onOpenContact }) => {
     const ref = useRef(null);
     const isInView = useInView(ref, { once: true, margin: "-100px" });
 
@@ -84,10 +84,10 @@ export const Pricing: React.FC = () => {
                             initial={{ opacity: 0, y: 30 }}
                             animate={isInView ? { opacity: 1, y: 0 } : {}}
                             transition={{ duration: 0.5, delay: index * 0.1 + 0.2 }}
-                            className={`relative p-6 md:p-8 rounded-2xl border transition-all duration-300 group
+                            className={`relative p-6 md:p-8 rounded-2xl border transition-all duration-300 group backdrop-blur-md
                 ${plan.highlight
-                                    ? 'bg-zinc-900 dark:bg-zinc-900 border-neon-blue shadow-lg shadow-neon-blue/20'
-                                    : 'bg-white dark:bg-zinc-900/50 border-zinc-200 dark:border-zinc-800 hover:border-zinc-300 dark:hover:border-zinc-700'
+                                    ? 'bg-zinc-900/90 dark:bg-zinc-900/90 border-neon-blue shadow-lg shadow-neon-blue/20'
+                                    : 'bg-white/50 dark:bg-zinc-900/40 border-zinc-200 dark:border-zinc-800 hover:border-neon-blue/30 dark:hover:border-neon-blue/30'
                                 }
               `}
                         >
@@ -128,7 +128,7 @@ export const Pricing: React.FC = () => {
                                 ))}
                             </ul>
 
-                            <button className={`w-full py-3 rounded-xl font-semibold transition-all duration-300
+                            <button onClick={onOpenContact} className={`w-full py-3 rounded-xl font-semibold transition-all duration-300
                 ${plan.highlight
                                     ? 'bg-gradient-to-r from-neon-blue to-neon-green text-zinc-900 hover:opacity-90'
                                     : 'bg-zinc-100 dark:bg-zinc-800 text-zinc-900 dark:text-white hover:bg-zinc-200 dark:hover:bg-zinc-700'

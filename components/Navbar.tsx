@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { ThemeToggle } from './ThemeToggle';
 import { Menu, X, ArrowRight } from 'lucide-react';
 
-export const Navbar: React.FC = () => {
+export const Navbar: React.FC<{ onOpenContact: () => void }> = ({ onOpenContact }) => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
@@ -42,13 +42,17 @@ export const Navbar: React.FC = () => {
                 key={link.name}
                 href={link.href}
                 className="text-sm font-medium text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100 transition-colors"
+                onClick={(e) => {
+                  e.preventDefault();
+                  document.querySelector(link.href)?.scrollIntoView({ behavior: 'smooth' });
+                }}
               >
                 {link.name}
               </a>
             ))}
           </div>
           <div className="h-4 w-px bg-zinc-300 dark:bg-zinc-700"></div>
-          <ThemeToggle />
+          {/*<ThemeToggle /> */}
           <a
             href="https://project-thinkk.vercel.app/"
             target="_blank"
@@ -57,7 +61,7 @@ export const Navbar: React.FC = () => {
           >
             Chat with ThinkBuddy
           </a>
-          <button className="bg-zinc-900 dark:bg-white text-white dark:text-zinc-900 px-4 py-2 rounded-full text-sm font-semibold hover:opacity-90 transition-opacity flex items-center gap-2">
+          <button onClick={onOpenContact} className="bg-zinc-900 dark:bg-white text-white dark:text-zinc-900 px-4 py-2 rounded-full text-sm font-semibold hover:opacity-90 transition-opacity flex items-center gap-2">
             Start a Project <ArrowRight size={14} />
           </button>
         </div>
@@ -83,7 +87,10 @@ export const Navbar: React.FC = () => {
                 key={link.name}
                 href={link.href}
                 className="text-lg font-medium text-zinc-800 dark:text-zinc-200"
-                onClick={() => setIsMobileMenuOpen(false)}
+                onClick={() => {
+                  setIsMobileMenuOpen(false);
+                  document.querySelector(link.href)?.scrollIntoView({ behavior: 'smooth' });
+                }}
               >
                 {link.name}
               </a>
@@ -97,7 +104,7 @@ export const Navbar: React.FC = () => {
             >
               Chat with ThinkBuddy
             </a>
-            <button className="w-full bg-zinc-900 dark:bg-white text-white dark:text-zinc-900 px-4 py-3 rounded-lg text-center font-semibold text-sm">
+            <button onClick={() => { onOpenContact(); setIsMobileMenuOpen(false); }} className="w-full bg-zinc-900 dark:bg-white text-white dark:text-zinc-900 px-4 py-3 rounded-lg text-center font-semibold text-sm">
               Start a Project
             </button>
           </div>

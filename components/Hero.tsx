@@ -3,7 +3,7 @@ import { ArrowRight, Terminal } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { Scene } from './Scene';
 
-export const Hero: React.FC = () => {
+export const Hero: React.FC<{ onOpenContact: () => void }> = ({ onOpenContact }) => {
   return (
     <section className="relative min-h-screen flex items-center pt-20 overflow-hidden bg-zinc-50 dark:bg-zinc-950">
       {/* 3D Scene Background - Scoped to Hero Section */}
@@ -57,7 +57,7 @@ export const Hero: React.FC = () => {
             transition={{ duration: 0.6, delay: 0.3 }}
             className="flex flex-col sm:flex-row gap-4"
           >
-            <button aria-label="Start a project" className="h-12 px-6 rounded-lg bg-zinc-900 dark:bg-white text-white dark:text-zinc-900 font-semibold hover:opacity-90 transition-opacity flex items-center justify-center gap-2 shadow-lg shadow-neon-blue/20">
+            <button onClick={onOpenContact} aria-label="Start a project" className="h-12 px-6 rounded-lg bg-zinc-900 dark:bg-white text-white dark:text-zinc-900 font-semibold hover:opacity-90 transition-opacity flex items-center justify-center gap-2 shadow-lg shadow-neon-blue/20">
               Start a Project <ArrowRight size={16} />
             </button>
             <a href="#process" aria-label="View methodology" className="h-12 px-6 rounded-lg border border-zinc-200 dark:border-zinc-800 text-zinc-900 dark:text-zinc-100 font-semibold hover:bg-zinc-50 dark:hover:bg-zinc-900/50 backdrop-blur-sm transition-colors flex items-center justify-center gap-2 hover:border-neon-green/50">

@@ -67,7 +67,7 @@ export const Testimonials: React.FC = () => {
                             whileInView={{ opacity: 1, y: 0 }}
                             viewport={{ once: true }}
                             transition={{ delay: index * 0.1 + 0.2 }}
-                            className="group relative rounded-2xl overflow-hidden bg-zinc-100 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800"
+                            className="group relative rounded-2xl overflow-hidden bg-white/50 dark:bg-zinc-900/40 border border-zinc-200 dark:border-zinc-800 backdrop-blur-sm hover:border-neon-blue/30 transition-colors"
                         >
                             {/* Image Container */}
                             <div className="aspect-[4/3] overflow-hidden relative">

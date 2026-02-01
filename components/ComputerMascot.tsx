@@ -21,26 +21,37 @@ export const ComputerMascot: React.FC<ComputerMascotProps> = ({
     // Blinking logic - Optimized to avoid memory leaks
     useEffect(() => {
         let timeoutId: number;
+        let mounted = true;
+
         const blinkLoop = () => {
+            if (!mounted) return;
             setBlink(true);
-            setTimeout(() => setBlink(false), 150);
+            setTimeout(() => {
+                if (mounted) setBlink(false);
+            }, 150);
             timeoutId = window.setTimeout(blinkLoop, Math.random() * 4000 + 2000);
         };
         timeoutId = window.setTimeout(blinkLoop, 2000);
-        return () => clearTimeout(timeoutId);
+
+        return () => {
+            mounted = false;
+            clearTimeout(timeoutId);
+        };
     }, []);
 
     // Animate to look at mouse - Optimized lerp
     useFrame((state, delta) => {
         if (groupRef.current) {
-            const x = (mouse.x * viewport.width) / 15;
-            const y = (mouse.y * viewport.height) / 15;
+            // Clamping the mouse values to prevent extreme rotation
+            const x = THREE.MathUtils.clamp((mouse.x * viewport.width) / 15, -0.5, 0.5);
+            const y = THREE.MathUtils.clamp((mouse.y * viewport.height) / 15, -0.5, 0.5);
 
             // Frame-rate independent smoothing
-            const smoothing = 1 - Math.pow(0.05, delta * 60);
+            // Use a slightly more dampening factor for smoother look
+            const damp = 4 * delta;
 
-            groupRef.current.rotation.y = THREE.MathUtils.lerp(groupRef.current.rotation.y, x * 0.2, 0.1); // Increased speed slightly for responsiveness
-            groupRef.current.rotation.x = THREE.MathUtils.lerp(groupRef.current.rotation.x, -y * 0.2, 0.1);
+            groupRef.current.rotation.y = THREE.MathUtils.lerp(groupRef.current.rotation.y, x, damp);
+            groupRef.current.rotation.x = THREE.MathUtils.lerp(groupRef.current.rotation.x, -y, damp);
         }
     });
 
@@ -105,6 +116,44 @@ export const ComputerMascot: React.FC<ComputerMascotProps> = ({
             <mesh position={[0.9, -1.2, 0.6]} rotation={[-0.2, -0.1, 0.2]}>
                 <capsuleGeometry args={[0.12, 0.3, 4, 8]} />
                 <meshStandardMaterial color={bodyColor} />
+            </mesh>
+
+            {/* Pookie Symbol - Floating Heart */}
+            <Heart position={[1.4, 1.2, 0.5]} rotation={[0, 0, 0.2]} scale={0.4} />
+        </group>
+    );
+};
+
+const Heart: React.FC<{ position: [number, number, number], rotation?: [number, number, number], scale?: number }> = ({ position, rotation, scale = 1 }) => {
+    const shape = React.useMemo(() => {
+        const x = 0, y = 0;
+        const heartShape = new THREE.Shape();
+        heartShape.moveTo(x + 5, y + 5);
+        heartShape.bezierCurveTo(x + 5, y + 5, x + 4, y, x, y);
+        heartShape.bezierCurveTo(x - 6, y, x - 6, y + 7, x - 6, y + 7);
+        heartShape.bezierCurveTo(x - 6, y + 11, x - 3, y + 15.4, x + 5, y + 19);
+        heartShape.bezierCurveTo(x + 12, y + 15.4, x + 16, y + 11, x + 16, y + 7);
+        heartShape.bezierCurveTo(x + 16, y + 7, x + 16, y, x + 10, y);
+        heartShape.bezierCurveTo(x + 7, y, x + 5, y + 5, x + 5, y + 5);
+        return heartShape;
+    }, []);
+
+    const groupRef = useRef<THREE.Group>(null);
+
+    useFrame((state) => {
+        if (groupRef.current) {
+            // Floating animation
+            groupRef.current.position.y = position[1] + Math.sin(state.clock.elapsedTime * 2) * 0.1;
+            // Gentle rotation
+            groupRef.current.rotation.y = Math.sin(state.clock.elapsedTime) * 0.2;
+        }
+    });
+
+    return (
+        <group ref={groupRef} position={position} rotation={rotation} scale={scale}>
+            <mesh rotation={[0, 0, Math.PI]} scale={0.05}>
+                <extrudeGeometry args={[shape, { depth: 4, bevelEnabled: true, bevelSegments: 2, steps: 2, bevelSize: 1, bevelThickness: 1 }]} />
+                <meshStandardMaterial color="#ec4899" emissive="#ec4899" emissiveIntensity={0.8} />
             </mesh>
         </group>
     );

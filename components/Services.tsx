@@ -8,8 +8,8 @@ const services = [
     title: "Modular SaaS Platforms",
     description: "High-performance single-page applications built with React and Next.js. We architect for modularity, allowing your product to scale from MVP to Enterprise without a rewrite.",
     icon: <Globe2 className="w-full h-full text-neon-blue" />,
-    color: "bg-cyan-50 dark:bg-cyan-950/20",
-    border: "border-cyan-200 dark:border-cyan-800",
+    color: "bg-zinc-50 dark:bg-zinc-900/40",
+    border: "border-neon-blue/20 dark:border-neon-blue/20",
     tags: ["Next.js", "React", "Node.js", "PostgreSQL"]
   },
   {
@@ -17,15 +17,15 @@ const services = [
     title: "Data Dashboards & Admin Panels",
     description: "Secure, role-based internal systems. We build the control centers for your business operations, integrating directly with your existing database architecture for real-time insights.",
     icon: <BarChart3 className="w-full h-full text-neon-green" />,
-    color: "bg-lime-50 dark:bg-lime-950/20",
-    border: "border-lime-200 dark:border-lime-800",
+    color: "bg-zinc-50 dark:bg-zinc-900/40",
+    border: "border-neon-green/20 dark:border-neon-green/20",
     tags: ["Recharts", "TanStack Table", "Supabase", "Redis"]
   },
   {
     category: "AI Integration",
     title: "AI-Powered Interfaces",
     description: "Seamless integration of LLMs and vector databases. We build 'chat with data' features, semantic search, and automated workflows that feel magical to your users.",
-    icon: <Database className="w-full h-full text-zinc-900 dark:text-white" />,
+    icon: <Database className="w-full h-full text-white" />,
     color: "bg-zinc-50 dark:bg-zinc-900/40",
     border: "border-zinc-200 dark:border-zinc-700",
     tags: ["OpenAI", "LangChain", "Pinecone", "Edge Functions"]
@@ -36,7 +36,7 @@ const services = [
     description: "Validate fast. We deliver rapidly developed, scalable initial versions of your product designed to test market hypotheses without accumulating technical debt.",
     icon: <Layers className="w-full h-full text-neon-blue" />,
     color: "bg-zinc-50 dark:bg-zinc-900/40",
-    border: "border-neon-blue/30 dark:border-neon-blue/30",
+    border: "border-neon-blue/20 dark:border-neon-blue/20",
     tags: ["Figma", "Tailwind", "Vercel", "tRPC"]
   }
 ];
@@ -63,7 +63,7 @@ const Card: React.FC<CardProps> = ({ i, service, progress, range, targetScale })
     <div ref={container} className="h-screen flex items-center justify-center sticky top-0">
       <motion.div
         style={{ scale, top: `calc(-5vh + ${i * 25}px)` }}
-        className={`flex flex-col relative -top-[25%] h-auto min-h-[500px] md:h-[500px] w-[90%] md:w-[1000px] rounded-3xl p-6 md:p-12 border ${service.border} ${service.color} backdrop-blur-sm shadow-2xl origin-top transition-colors`}
+        className={`flex flex-col relative -top-[25%] h-auto min-h-[500px] md:h-[500px] w-[90%] md:w-[1000px] rounded-3xl p-6 md:p-12 border ${service.border} ${service.color} backdrop-blur-md shadow-2xl origin-top transition-colors will-change-transform`}
       >
         <div className="flex flex-col h-full justify-between">
           {/* Header */}
