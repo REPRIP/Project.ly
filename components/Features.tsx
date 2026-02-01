@@ -93,7 +93,7 @@ const ProcessNode: React.FC<ProcessNodeProps> = ({ step, index, isEven }) => {
           <motion.div
             initial={{ scale: 0 }}
             whileInView={{ scale: 1 }}
-            viewport={{ margin: "-100px" }}
+            viewport={{ once: true, margin: "-100px" }}
             transition={{ delay: 0.2 }}
             className="w-full h-full bg-neon-green rounded-full origin-center"
           />
@@ -103,7 +103,7 @@ const ProcessNode: React.FC<ProcessNodeProps> = ({ step, index, isEven }) => {
         <motion.div
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
-          viewport={{ margin: "-100px" }}
+          viewport={{ once: true, margin: "-100px" }}
           className="absolute inset-0 bg-neon-green/30 blur-xl rounded-full"
         />
       </div>
@@ -181,7 +181,7 @@ export const Features: React.FC = () => {
             <motion.div
               initial={{ scale: 0, opacity: 0 }}
               whileInView={{ scale: 1, opacity: 1 }}
-              viewport={{ margin: "0px" }}
+              viewport={{ once: true, margin: "0px" }}
               className="flex flex-col items-center gap-4"
             >
               <div className="w-8 h-8 rounded-full bg-zinc-900 dark:bg-white flex items-center justify-center text-white dark:text-zinc-900 shadow-lg shadow-neon-green/20">
